@@ -9,8 +9,6 @@
   <version>1.0-SNAPSHOT</version>
 
   <name>arepweb</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,6 +22,12 @@
       <artifactId>junit</artifactId>
       <version>4.11</version>
       <scope>test</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>2.0.1.Final</version>
     </dependency>
   </dependencies>
 

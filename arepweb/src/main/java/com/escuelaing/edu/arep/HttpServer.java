@@ -32,6 +32,14 @@ public class HttpServer {
                 }
             }
 
+            try {
+                File file = new HtmlFile().main("index.html");
+                System.out.println(file);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+            
+
             outputLine = "HTTP/1.1 200 OK\r\n" + "Content-Type: text/html\r\n" + "\r\n" + "<!DOCTYPE html>\n"
                     + "<html>\n" + "<head>\n" + "<meta charset=\"UTF-8\">\n" + "<title>Title of the document</title>\n"
                     + "</head>\n" + "<body>\n" + "<h1>Mi propio mensaje</h1>\n" + "</body>\n" + "</html>\n";
@@ -54,4 +62,5 @@ public class HttpServer {
         }
         return 4567; // returns default port if heroku-port isn't set (i.e.on localhost)
     }
+
 }

@@ -51,13 +51,14 @@ public class HttpServer {
                             htmlPath = path.substring(path.indexOf("apps/"));
                         }
                         if (URLHandler.containsKey(s)) {
+                            String response;
                             if (param == null)
-                                String response = URLHandler.get(htmlPath).process();
+                                response = URLHandler.get(htmlPath).process();
                             else
-                                String response = URLHandler.get(htmlPath).process(new String[] { param[1] });
-                            getRequest("202 OK", "text/html", out, response);
+                                response = URLHandler.get(htmlPath).process(new String[] { param[1] });
+                            getRequest("202 OK", "text/html", response, out);
                         } else {
-                            getRequest("404 Not Found", "text/html", out, "Not Found");
+                            getRequest("404 Not Found", "text/html", "Not Found", out);
                         }
                     } else {
                         if(path.equals("/")){
@@ -69,7 +70,7 @@ public class HttpServer {
                             outputLine = "<!DOCTYPE html>" + "<html>" + "<head>" + "<metacharset=\"UTF-8\">"
                                     + "<title>Title of the document</title>\n" + "</head>" + "<body>"
                                     + "My Web Framework" + "</body>" + "</html>";
-                            getRequest("200 OK", "text/html", out, outputLine);
+                            getRequest("200 OK", "text/html", outputLine, out);
                         }
 
                     }
@@ -85,7 +86,7 @@ public class HttpServer {
         }
     }
 
-    private void getRequest(String httpStatus, String mimeType, String content) {
+    private static void getRequest(String httpStatus, String mimeType, String content, PrintWriter out) {
         out.write("HTTP/1.1 " + httpStatus + "\r\n");
         out.write("Content-Type: " + mimeType + "\r\n");
         out.write("\r\n");

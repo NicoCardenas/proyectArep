@@ -8,6 +8,12 @@ import javax.validation.*;
  */
 public class Annotations {
 
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.METHOD)
+    public @interface Web {
+        String value() defauld "Sample";
+    }
+
     @Constraint(validatedBy = ValidatorController.class)
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)

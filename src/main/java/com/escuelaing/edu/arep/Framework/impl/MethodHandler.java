@@ -1,11 +1,13 @@
 package com.escuelaing.edu.arep.Framework.impl;
 
+import java.lang.reflect.Method;
+
 import com.escuelaing.edu.arep.Framework.Handler;
 
-public class StaticMethodHandler implements Handler {
+public class MethodHandler implements Handler {
     Method method;
 
-    public StaticMethodHandler(Method method) {
+    public MethodHandler(Method method) {
         this.method = method;
     }
 
@@ -22,7 +24,7 @@ public class StaticMethodHandler implements Handler {
     @Override
     public String process(String[] params) {
         try {
-            return (String)this.method.invoke(null, params);
+            return (String) this.method.invoke(null, params);
         } catch (Exception e) {
             System.err.println(e.getStackTrace());
         }

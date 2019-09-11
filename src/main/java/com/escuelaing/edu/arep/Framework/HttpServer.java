@@ -6,13 +6,18 @@ import java.io.*;
 import java.lang.reflect.Method;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.escuelaing.edu.arep.Framework.impl.MethodHandler;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
 public class HttpServer {
+    private static Map<String, Handler> URLHandler = new HashMap<String, Handler>();
 
-    public static void run() throws IOException {
+    public void run() throws IOException {
         while (true) {
             ServerSocket serverSocket = null;
             try {
@@ -50,12 +55,12 @@ public class HttpServer {
                         } else {
                             htmlPath = path.substring(path.indexOf("apps/"));
                         }
-                        if (URLHandler.containsKey(s)) {
+                        if (URLHandler.containsKey(htmlPath)) {
                             String response;
-                            if (param == null)
+                            if (params == null)
                                 response = URLHandler.get(htmlPath).process();
                             else
-                                response = URLHandler.get(htmlPath).process(new String[] { param[1] });
+                                response = URLHandler.get(htmlPath).process(new String[] { params[1] });
                             getRequest("202 OK", "text/html", response, out);
                         } else {
                             getRequest("404 Not Found", "text/html", "Not Found", out);
@@ -98,5 +103,9 @@ public class HttpServer {
             return Integer.parseInt(System.getenv("PORT"));
         }
         return 4567; // returns default port if heroku-port isn't set (i.e.on localhost)
+    }
+
+    public static void put(String path, MethodHandler methodHandler){
+        URLHandler.put(path, methodHandler);
     }
 }

@@ -1,12 +1,13 @@
 package com.escuelaing.edu.arep;
 
 import java.io.File;
+import java.io.InputStream;
 
-public static class LoaderFile {
+public class LoaderFile {
 
-    public void getFile(String path) {
-        LoaderFile.class.getResourceAsStream(path);
+    public static void getFile(String path) {
+        InputStream in = LoaderFile.class.getResourceAsStream(path);
         if ( in == null )
-            throw new Exception("resource not found: " + respath);
+            throw new Exception("resource not found: " + path);
     }
 }

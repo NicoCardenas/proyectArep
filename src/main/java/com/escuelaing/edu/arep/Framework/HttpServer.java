@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.escuelaing.edu.arep.LoaderFile;
 import com.escuelaing.edu.arep.Framework.impl.MethodHandler;
 
 import org.reflections.Reflections;
@@ -66,23 +67,27 @@ public class HttpServer {
                             getRequest("404 Not Found", "text/html", "Not Found", out);
                         }
                     } else {
+                        LoaderFile file = new LoaderFile();
                         if(path.equals("/")){
-                            LoaderFile.getFile(out, "/index.html", clientSocket);
+                            try {
+                                file.readFile("index.html",out);
+                            } catch (Exception e) {
+                                System.err.println(e);
+                            }
                         }
                         else if (path.contains(".")) {
-                            LoaderFile.getFile(out, path, clientSocket);
+                            file.readFile(path, out);
                         } else {
                             outputLine = "<!DOCTYPE html>" + "<html>" + "<head>" + "<metacharset=\"UTF-8\">"
                                     + "<title>Title of the document</title>\n" + "</head>" + "<body>"
                                     + "My Web Framework" + "</body>" + "</html>";
                             getRequest("200 OK", "text/html", outputLine, out);
                         }
-
                     }
                 }
             }
-            out.write(outputLine);
-
+            
+            //out.write(outputLine);
             out.close();
             in.close();
 

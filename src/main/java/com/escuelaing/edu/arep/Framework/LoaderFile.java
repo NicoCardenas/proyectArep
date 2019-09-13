@@ -11,11 +11,13 @@ import java.io.PrintWriter;
 import com.escuelaing.edu.arep.Framework.HttpServer;
 
 public class LoaderFile {
+    private static String STATICFILES="/src/main/resources/";
 
     public void readFile(String path, PrintWriter out, HttpServer hs, String httpStatus, String mimeType) {
 
         try {
-            File file = new File(getClass().getClassLoader().getResource("index.html").getFile());
+            File file = new File(getClass().getClassLoader().getResource(path).getFile());
+            System.out.println(file.getAbsolutePath());
             FileReader reader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(reader);
             String line, outputline = "";
@@ -27,15 +29,16 @@ public class LoaderFile {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-        /*String line = null;
+        
+        /*String Absolutepath = System.getProperty("user.dir")+STATICFILES + path;
+        String line, outputline = "";
         try {
-            FileReader fileReader = new FileReader(path);
+            FileReader fileReader = new FileReader(Absolutepath);
             BufferedReader bufferedReader =  new BufferedReader(fileReader);
             while((line = bufferedReader.readLine()) != null) {
                 out.write(line);
             }
+            hs.getRequest(httpStatus, mimeType, outputline, out);
             bufferedReader.close();         
         }
         catch (FileNotFoundException ex) {

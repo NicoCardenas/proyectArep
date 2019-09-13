@@ -7,20 +7,11 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
 import com.escuelaing.edu.arep.Annotations.Annotations.Web;
 import com.escuelaing.edu.arep.Framework.HttpServer;
 import com.escuelaing.edu.arep.Framework.impl.MethodHandler;
 
-public class ValidatorWeb implements ConstraintValidator<Web, String> {
-
-    @Override
-    public boolean isValid(String value, ConstraintValidatorContext context) {
-        // TODO Auto-generated method stub
-        return false;
-    }
+public class ValidatorWeb {
 
     public void initializeWeb() {
         Reflections reflections = new Reflections("com.escuelaing.edu.arep.Server", new SubTypesScanner(false));

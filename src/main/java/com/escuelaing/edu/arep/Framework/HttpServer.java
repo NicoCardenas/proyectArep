@@ -1,6 +1,7 @@
 package com.escuelaing.edu.arep.Framework;
 
 import java.net.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 
 import java.lang.reflect.Method;
@@ -8,6 +9,8 @@ import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import com.escuelaing.edu.arep.Framework.LoaderFile;
 import com.escuelaing.edu.arep.Framework.impl.MethodHandler;
@@ -70,13 +73,21 @@ public class HttpServer {
                         LoaderFile file = new LoaderFile();
                         if(path.equals("/")){
                             try {
-                                file.readFile("index.html", out, this, "200 OK", "text/html");
+                                file.readFile("index.html", out, this, "200 OK", "text/html", clientSocket);
                             } catch (Exception e) {
                                 System.err.println(e);
                             }
                         }
                         else if (path.contains(".")) {
-                            file.readFile(path, out, this, "200 OK", "text/html");
+                            String mineType;
+                            if (path.contains(".png"))
+                                mineType = "image/png";
+                            else if (path.contains(".jpg") || path.contains(".jpeg") || path.contains(".jpe"))
+                                mineType = "image/jpeg";
+                            else
+                                mineType = "text/html";
+                            System.out.println(mineType +" : "+path);
+                            file.readFile(path, out, this, "200 OK", mineType, clientSocket);
                         } else {
                             outputLine = "<!DOCTYPE html>" + "<html>" + "<head>" + "<metacharset=\"UTF-8\">"
                                     + "<title>Title of the document</title>\n" + "</head>" + "<body>"
@@ -86,8 +97,6 @@ public class HttpServer {
                     }
                 }
             }
-            
-            //out.write(outputLine);
             out.close();
             in.close();
 
@@ -101,6 +110,16 @@ public class HttpServer {
         out.write("Content-Type: " + mimeType + "\r\n");
         out.write("\r\n");
         out.write(content);
+    }
+
+    public static void getRequest(String httpStatus, String mimeType, PrintWriter out) {
+        try {
+            out.write("HTTP/1.1 " + httpStatus + "\r\n");
+            out.write("Content-Type: " + mimeType + "\r\n");
+            out.write("\r\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     static int getPort() {

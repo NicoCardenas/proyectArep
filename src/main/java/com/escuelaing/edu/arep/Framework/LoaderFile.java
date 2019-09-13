@@ -1,51 +1,60 @@
 package com.escuelaing.edu.arep.Framework;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.Socket;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 import com.escuelaing.edu.arep.Framework.HttpServer;
 
 public class LoaderFile {
-    private static String STATICFILES="/src/main/resources/";
 
-    public void readFile(String path, PrintWriter out, HttpServer hs, String httpStatus, String mimeType) {
+    public void readFile(String path, PrintWriter out, HttpServer hs, String httpStatus, String mimeType, Socket socket) {
 
         try {
-            File file = new File(getClass().getClassLoader().getResource(path).getFile());
-            System.out.println(file.getAbsolutePath());
-            FileReader reader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(reader);
+            File file;
+            BufferedReader bufferedReader;
+            BufferedImage image;
             String line, outputline = "";
-            while ((line = bufferedReader.readLine()) != null) {
-                outputline += line;
+
+            if (path.contains(".html")) {
+                file = new File(getClass().getClassLoader().getResource(path).getFile());
+                FileReader reader = new FileReader(file);
+                bufferedReader = new BufferedReader(reader);
+                while ((line = bufferedReader.readLine()) != null) {
+                    outputline += line;
+                }
+                hs.getRequest(httpStatus, mimeType, outputline, out);
+                bufferedReader.close();
+            } else {
+                System.out.println(getClass().getResource(path));
+                String type;
+                if (path.contains(".jpg"))
+                    type = "jpg";
+                else if (path.contains(".jpe"))
+                    type = "jpe";
+                else if (path.contains(".jpeg"))
+                    type = "jpeg";
+                else 
+                    type = "png";
+                image = ImageIO.read(getClass().getResource(path));
+                hs.getRequest(httpStatus, mimeType, out);
+                ImageIO.write(image, type, socket.getOutputStream());
             }
-            hs.getRequest(httpStatus, mimeType, outputline, out);
-            bufferedReader.close();
         } catch (Exception e) {
+            String outputline = "<!DOCTYPE html>" + "<html>" + "<head>" + "<metacharset=\"UTF-8\">"
+            + "<title>Title of the document</title>\n" + "</head>" + "<body>"
+            + "<center><h1>File Not Found</h1></center>" + "</body>" + "</html>";
+            hs.getRequest("404 Not Found", mimeType, outputline, out);
             e.printStackTrace();
         }
-        
-        /*String Absolutepath = System.getProperty("user.dir")+STATICFILES + path;
-        String line, outputline = "";
-        try {
-            FileReader fileReader = new FileReader(Absolutepath);
-            BufferedReader bufferedReader =  new BufferedReader(fileReader);
-            while((line = bufferedReader.readLine()) != null) {
-                out.write(line);
-            }
-            hs.getRequest(httpStatus, mimeType, outputline, out);
-            bufferedReader.close();         
-        }
-        catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        }
-        catch (IOException ex) {              
-            ex.printStackTrace();
-        }*/
     }
 }

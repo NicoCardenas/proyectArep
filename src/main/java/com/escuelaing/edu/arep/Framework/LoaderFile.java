@@ -7,8 +7,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.util.Base64;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -46,8 +50,21 @@ public class LoaderFile {
                 else 
                     type = "png";
                 image = ImageIO.read(getClass().getResource(path));
-                hs.getRequest(httpStatus, mimeType, out);
-                ImageIO.write(image, type, socket.getOutputStream());
+                String imageString;
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                try {
+                    ImageIO.write(image, type, bos);
+                    byte[] imageBytes = bos.toByteArray();
+
+                    imageString = Base64.getEncoder().encodeToString(imageBytes);
+         
+                    bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(image.toString());
+
+                hs.getRequest(httpStatus, mimeType, image.toString(), out);
             }
         } catch (Exception e) {
             String outputline = "<!DOCTYPE html>" + "<html>" + "<head>" + "<metacharset=\"UTF-8\">"

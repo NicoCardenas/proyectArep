@@ -113,13 +113,9 @@ public class HttpServer {
     }
 
     public static void getRequest(String httpStatus, String mimeType, PrintWriter out) {
-        try {
-            out.write("HTTP/1.1 " + httpStatus + "\r\n");
-            out.write("Content-Type: " + mimeType + "\r\n");
-            out.write("\r\n");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        out.write("HTTP/1.1 " + httpStatus + "\r\n");
+        out.write("Content-Type: " + mimeType + "\r\n");
+        out.write("\r\n");
     }
 
     static int getPort() {

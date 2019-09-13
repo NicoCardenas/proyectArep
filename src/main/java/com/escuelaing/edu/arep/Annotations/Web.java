@@ -1,7 +1,6 @@
 package com.escuelaing.edu.arep.Annotations;
 
 import java.lang.annotation.*;
-import javax.validation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

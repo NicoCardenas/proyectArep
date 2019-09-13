@@ -8,7 +8,6 @@ import javax.validation.*;
  */
 public class Annotations {
 
-    @Constraint(validatedBy = ValidatorWeb.class)
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
     public @interface Web {

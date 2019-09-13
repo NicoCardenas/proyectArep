@@ -46,15 +46,15 @@ public class HttpServer {
                 }
                 if (inputLine.contains("GET")) {
                     String path = inputLine.split(" ")[1];
-                    if (path.contains("apps/")){
+                    if (path.contains("/apps/")){
                         String[] params = null;
                         String htmlPath;
                         if (path.contains("?")){
                             int i = path.indexOf("?");
                             params = path.substring(i + 1).split("=");
-                            htmlPath = path.substring(path.indexOf("apps/"), i);
+                            htmlPath = path.substring(path.indexOf("/apps/"), i);
                         } else {
-                            htmlPath = path.substring(path.indexOf("apps/"));
+                            htmlPath = path.substring(path.indexOf("/apps/"));
                         }
                         if (URLHandler.containsKey(htmlPath)) {
                             String response;
@@ -70,13 +70,13 @@ public class HttpServer {
                         LoaderFile file = new LoaderFile();
                         if(path.equals("/")){
                             try {
-                                file.readFile("index.html",out);
+                                file.readFile("index.html", out, this, "200 OK", "text/html");
                             } catch (Exception e) {
                                 System.err.println(e);
                             }
                         }
                         else if (path.contains(".")) {
-                            file.readFile(path, out);
+                            file.readFile(path, out, this, "200 OK", "text/html");
                         } else {
                             outputLine = "<!DOCTYPE html>" + "<html>" + "<head>" + "<metacharset=\"UTF-8\">"
                                     + "<title>Title of the document</title>\n" + "</head>" + "<body>"
@@ -96,7 +96,7 @@ public class HttpServer {
         }
     }
 
-    private static void getRequest(String httpStatus, String mimeType, String content, PrintWriter out) {
+    public static void getRequest(String httpStatus, String mimeType, String content, PrintWriter out) {
         out.write("HTTP/1.1 " + httpStatus + "\r\n");
         out.write("Content-Type: " + mimeType + "\r\n");
         out.write("\r\n");

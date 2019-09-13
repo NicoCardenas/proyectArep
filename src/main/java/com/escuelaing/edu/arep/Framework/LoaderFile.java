@@ -8,18 +8,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 
+import com.escuelaing.edu.arep.Framework.HttpServer;
+
 public class LoaderFile {
 
-    public void readFile(String path, PrintWriter out) {
+    public void readFile(String path, PrintWriter out, HttpServer hs, String httpStatus, String mimeType) {
 
         try {
+            PrintWriter outLF = new PrintWriter(
+                    new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8), true);
             File file = new File(getClass().getClassLoader().getResource("index.html").getFile());
             FileReader reader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(reader);
-            String line;
+            String line, outputline;
             while ((line = bufferedReader.readLine()) != null) {
-                out.write(line);
+                outputline += line;
             }
+            hs.getRequest(httpStatus, mimeType, outputLine, out);
             bufferedReader.close();
         } catch (Exception e) {
             e.printStackTrace();

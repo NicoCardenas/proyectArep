@@ -5,7 +5,6 @@ import org.reflections.scanners.*;
 
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import com.escuelaing.edu.arep.Annotations.Annotations.Web;
 import com.escuelaing.edu.arep.Framework.HttpServer;
@@ -15,7 +14,6 @@ public class ValidatorWeb {
 
     public void initializeWeb() {
         Reflections reflections = new Reflections("com.escuelaing.edu.arep.Server", new SubTypesScanner(false));
-        
     
         Set<Class<?>> allClasses = reflections.getSubTypesOf(Object.class);
         for (Class<?> clazz : allClasses) {

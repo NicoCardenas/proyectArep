@@ -44,20 +44,17 @@ public class HttpServer {
             String inputLine, outputLine;
             while ((inputLine = in.readLine()) != null) {
                 System.out.println("Received: " + inputLine);
-                if (!in.ready()) {
-                    break;
-                }
                 if (inputLine.contains("GET")) {
                     String path = inputLine.split(" ")[1];
-                    if (path.contains("/apps/")){
+                    if (path.contains("apps/")) {
                         String[] params = null;
                         String htmlPath;
                         if (path.contains("?")){
                             int i = path.indexOf("?");
                             params = path.substring(i + 1).split("=");
-                            htmlPath = path.substring(path.indexOf("/apps/"), i);
+                            htmlPath = path.substring(path.indexOf("apps/"), i);
                         } else {
-                            htmlPath = path.substring(path.indexOf("/apps/"));
+                            htmlPath = path.substring(path.indexOf("apps/"));
                         }
                         if (URLHandler.containsKey(htmlPath)) {
                             String response;
@@ -86,15 +83,18 @@ public class HttpServer {
                                 mineType = "image/jpeg";
                             else
                                 mineType = "text/html";
-                            System.out.println(mineType +" : "+path);
                             file.readFile(path, out, this, "200 OK", mineType, clientSocket);
                         } else {
                             outputLine = "<!DOCTYPE html>" + "<html>" + "<head>" + "<metacharset=\"UTF-8\">"
                                     + "<title>Title of the document</title>\n" + "</head>" + "<body>"
-                                    + "My Web Framework" + "</body>" + "</html>";
+                                    + "<center><h1>File Not Found</h1></center>" + "</body>" + "</html>";
                             getRequest("200 OK", "text/html", outputLine, out);
                         }
                     }
+                }
+
+                if (!in.ready()) {
+                    break;
                 }
             }
             out.close();

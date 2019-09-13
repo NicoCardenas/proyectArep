@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.escuelaing.edu.arep.LoaderFile;
+import com.escuelaing.edu.arep.Framework.LoaderFile;
 import com.escuelaing.edu.arep.Framework.impl.MethodHandler;
 
 import org.reflections.Reflections;

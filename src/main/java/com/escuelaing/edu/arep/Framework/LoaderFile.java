@@ -15,16 +15,14 @@ public class LoaderFile {
     public void readFile(String path, PrintWriter out, HttpServer hs, String httpStatus, String mimeType) {
 
         try {
-            PrintWriter outLF = new PrintWriter(
-                    new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8), true);
             File file = new File(getClass().getClassLoader().getResource("index.html").getFile());
             FileReader reader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(reader);
-            String line, outputline;
+            String line, outputline = "";
             while ((line = bufferedReader.readLine()) != null) {
                 outputline += line;
             }
-            hs.getRequest(httpStatus, mimeType, outputLine, out);
+            hs.getRequest(httpStatus, mimeType, outputline, out);
             bufferedReader.close();
         } catch (Exception e) {
             e.printStackTrace();

@@ -6,7 +6,6 @@ import org.reflections.scanners.*;
 import java.lang.reflect.Method;
 import java.util.*;
 
-import com.escuelaing.edu.arep.Annotations.Annotations.Web;
 import com.escuelaing.edu.arep.Framework.HttpServer;
 import com.escuelaing.edu.arep.Framework.impl.MethodHandler;
 
